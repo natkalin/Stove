@@ -1,6 +1,6 @@
 
 public enum Setting {	
-	OFF("---"), LOW("--+"), MEDIUM("-++"), HIGH("+++");
+	OFF("[---]"), LOW("[--+]"), MEDIUM("[-++]"), HIGH("[+++]");
 	
 	private String value;
 	
