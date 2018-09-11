@@ -1,4 +1,6 @@
-
+/*
+ * Authors : Natalie Kalin & Cale Waress
+ */
 public enum Setting {	
 	OFF("[---]"), LOW("[--+]"), MEDIUM("[-++]"), HIGH("[+++]");
 	

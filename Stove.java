@@ -76,6 +76,7 @@ public class Stove {
 			for (Burner burner : burners)
 				burner.updateTemperature();
 	}
+	
 	public static void main(String[] args) {
 		Stove stove = new Stove();
 		System.out.println("Beginning stove state ");

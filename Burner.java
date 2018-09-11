@@ -1,13 +1,13 @@
-
+/*
+ * Authors : Natalie Kalin & Cale Waress
+ */
 public class Burner {
 
 	private enum Temperature {BLAZING,HOT,WARM,COLD};
-	private static enum Direction {PLUS,MINUS};
 	private Temperature myTemperature;
 	private Setting mySetting;
-	private static Direction myDirection;
 	private int timer = 0;
-	public final static int TIME_DURATION = 2;
+	public static final int TIME_DURATION = 2;
 	
 	public Burner() {
 		super();
@@ -19,25 +19,20 @@ public class Burner {
 		return myTemperature;
 	}
 	
-	public void plusButton() {
-		
-		myDirection = myDirection.PLUS;
+	public void plusButton() {		
 		
 		switch(mySetting) {
 			case OFF:
 				mySetting = Setting.LOW;
-				timer = timer + TIME_DURATION;
+				timer = TIME_DURATION;
 				break;
 			case LOW:
 				mySetting = Setting.MEDIUM;
-				timer = timer + TIME_DURATION;
 				break;
 			case MEDIUM:
-				timer = timer + TIME_DURATION;
 				mySetting = Setting.HIGH;
 				break;
 			case HIGH:
-				timer = timer + TIME_DURATION;
 				break;
 		}
 			
@@ -45,58 +40,102 @@ public class Burner {
 	
 	public void minusButton() {
 		
-		myDirection = myDirection.MINUS;
-		
 		switch(mySetting) {
 		case OFF:
-			timer = timer + TIME_DURATION;
 			break;
 		case LOW:
-			timer = timer + TIME_DURATION;
 			mySetting = Setting.OFF;
 			break;
 		case MEDIUM:
-			timer = timer + TIME_DURATION;
 			mySetting = Setting.LOW;
 			break;
 		case HIGH:
-			timer = timer + TIME_DURATION;
 			mySetting = Setting.MEDIUM;
+			timer =  TIME_DURATION;
 			break;
 		}
 		
 	}
 	
-	public void updateTemperature() {	
-		
-		
-		
-		if(timer%2 != 0) {
-			switch(myDirection) {
-				case PLUS:
-			
-			}
-			switch(myTemperature) {
-			case COLD:
-				myTemperature = Temperature.WARM;
-				break;
-			case WARM:
-				myTemperature = Temperature.HOT;
-				break;
-			case HOT:
-				myTemperature = Temperature.BLAZING;
-				break;
-			case BLAZING:
-				break;
-			}
-		}
-		
+	public void updateTemperature() {		
 		
 		if(timer != 0)
 		{
-			timer = timer - 1;
+			timer--;
+		}
+		
+		if(timer == 0)
+		{
+			switch(mySetting) {
+			case OFF:
+				if(myTemperature != Temperature.COLD) {
+					previous();
+					timer = TIME_DURATION;
+				}
+				break;
+			case LOW:
+				if(myTemperature != Temperature.WARM) {
+					if(myTemperature == Temperature.HOT  || myTemperature == Temperature.BLAZING) {
+						previous();
+					} else {
+						next();
+					}
+					timer = TIME_DURATION;
+				}
+				break;
+			case MEDIUM:
+				if(myTemperature != Temperature.HOT) {
+					if(myTemperature == Temperature.BLAZING) {
+						previous();
+					} else {
+						next();
+					}
+					timer = TIME_DURATION;
+				}
+				break;
+			case HIGH:
+				if(myTemperature != Temperature.BLAZING) {
+					next();
+					timer = TIME_DURATION;
+				}
+				break;
+			}
+		}	
+		
+	}
+	
+	public void next() {
+		switch(myTemperature) {
+		case COLD:
+			myTemperature = Temperature.WARM;
+			break;
+		case WARM:
+			myTemperature = Temperature.HOT;
+			break;
+		case HOT:
+			myTemperature = Temperature.BLAZING;
+			break;
+		case BLAZING:
+			break;
 		}
 	}
+	
+	public void previous() {
+		switch(myTemperature) {
+		case BLAZING:
+			myTemperature = Temperature.HOT;
+			break;
+		case HOT:
+			myTemperature = Temperature.WARM;
+			break;
+		case WARM:
+			myTemperature = Temperature.COLD;
+			break;
+		case COLD:
+			break;
+		}
+	}
+	
 	
 	public boolean display() {
 		
